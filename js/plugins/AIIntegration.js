@@ -25,7 +25,7 @@
 
 (() => {
     const apiKey = "YOUR_API_KEY_HERE"; // Replace with your actual API key
-    const apiUrl = "https://api.openai.com/v1/chat/completions";
+    const apiUrl = "http://localhost:3000/chat"; // Point to your local server
 
     /**
      * Fetches a response from the OpenAI API.
