@@ -54,3 +54,20 @@ process.on('unhandledRejection', (reason, promise) => {
     // Optionally, exit the process or perform cleanup tasks
     process.exit(1);
 });
+
+const express = require('express');
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Serve static files (if you have an HTML page)
+app.use(express.static('public'));  // Change 'public' to your actual folder
+
+// Define a route for the root URL
+app.get('/', (req, res) => {
+    res.send('Hello, world!');  // You can replace this with HTML content or a view
+});
+
+// Start the server
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
