@@ -24,7 +24,7 @@
  */
 
 (() => {
-    const apiKey = process.env.OPENAI_API_KEY; // Fetch API key securely from environment variables
+    const apiKey = "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"; // Replace with your actual API key
     const apiUrl = "https://api.openai.com/v1/chat/completions"; // OpenAI API URL
 
     /**
@@ -32,14 +32,14 @@
      * @param {string} prompt - The user's message or query.
      * @returns {Promise<string>} - The AI's response or an error message.
      */
-    async function fetchAIResponse(prompt) {
+    const fetchAIResponse = async (prompt) => {
         const headers = {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${apiKey}`,
         };
 
         const body = JSON.stringify({
-            model: "gpt-4o-mini-2024-07-18", // Ensure you use the correct model here
+            model: "gpt-4", // Ensure you use the correct model here
             messages: [{ role: "user", content: prompt }],
             max_tokens: 100,
         });
@@ -64,7 +64,7 @@
             console.error("Fetch Error:", error);
             return "Error: Unable to connect to AI.";
         }
-    }
+    };
 
     /**
      * Registers the AIChat command in the Plugin Manager.
@@ -73,6 +73,7 @@
         const prompt = args.message || "Hello!";
         console.log("Plugin Command Triggered with Prompt:", prompt);
 
+        // Await the response and add it to the game message
         const response = await fetchAIResponse(prompt);
         console.log("AI Response:", response);
 
