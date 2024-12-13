@@ -25,8 +25,7 @@
 
 (() => {
     const apiKey = "YOUR_API_KEY"; // Replace with your actual API key
-    const apiUrl = "https://shrouded-hamlet-24645-7f5b2e86a49d.herokuapp.com/chat";
- // Point to your local server
+    const apiUrl = "https://shrouded-hamlet-24645-7f5b2e86a49d.herokuapp.com/chat"; // Make sure your Heroku server is running and accessible
 
     /**
      * Fetches a response from the OpenAI API.
@@ -40,23 +39,18 @@
         };
 
         const body = JSON.stringify({
-            model: "gpt-4o-mini-2024-07-18", // Use the correct model name
+            model: "gpt-4", // Ensure this model name is valid or adjust as needed
             messages: [{ role: "user", content: prompt }],
             max_tokens: 100,
         });
 
         try {
             console.log("Sending API request...");
-            console.log("Headers:", headers);
-            console.log("Body:", body);
-
             const response = await fetch(apiUrl, {
                 method: "POST",
                 headers: headers,
                 body: body,
             });
-
-            console.log("Response Status:", response.status);
 
             if (!response.ok) {
                 const errorText = await response.text();
@@ -66,10 +60,10 @@
 
             const data = await response.json();
             console.log("API Response Data:", data);
-            return data.choices[0].message.content;
+            return data.choices[0].message.content; // Extract the message from the response
         } catch (error) {
             console.error("Fetch Error:", error);
-            return "Error: Unable to connect to AI.";
+            return "Error: Unable to connect to AI. Please try again later."; // User-friendly message
         }
     }
 
