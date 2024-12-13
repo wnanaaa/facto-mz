@@ -2011,9 +2011,7 @@ var PIXI = (function (exports) {
 	};
 	earcut_1.default = default_1;
 
-	var punycode = createCommonjsModule(function (module, exports) {
-	/*! https://mths.be/punycode v1.3.2 by @mathias */
-	;(function(root) {
+	const punycode = require('punycode/');(function(root) {
 
 		/** Detect free variables */
 		var freeExports = 'object' == 'object' && exports &&

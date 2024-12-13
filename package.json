@@ -12,6 +12,7 @@
     "dependencies": {
         "express": "^4.21.2",
         "node-fetch": "^2.7.0",
+        "pixi.js": "^8.6.4",
         "punycode": "^2.3.1"
     }
 }

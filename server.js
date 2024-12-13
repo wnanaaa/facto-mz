@@ -2,14 +2,18 @@ const express = require("express");
 const fetch = require("node-fetch");
 const app = express();
 
-// Use the PORT environment variable provided by Heroku
-const PORT = process.env.PORT || 3000;
+// Use the Heroku-provided port, or default to 3000 for local testing
+const PORT = process.env.PORT || 3001;  // Ensure dynamic Heroku port binding
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
 
 app.use(express.json());
 
-// Example endpoint
+// Example route to interact with the OpenAI API
 app.post("/chat", async (req, res) => {
     const { prompt } = req.body;
+
     try {
         const response = await fetch("https://api.openai.com/v1/chat/completions", {
             method: "POST",
@@ -18,11 +22,12 @@ app.post("/chat", async (req, res) => {
                 Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
             },
             body: JSON.stringify({
-                model: "gpt-4o-mini-2024-07-18",
+                model: "gpt-4",
                 messages: [{ role: "user", content: prompt }],
                 max_tokens: 100,
             }),
         });
+
         const data = await response.json();
         res.json({ reply: data.choices[0].message.content });
     } catch (error) {
@@ -31,7 +36,21 @@ app.post("/chat", async (req, res) => {
     }
 });
 
-// Start the server and bind to the PORT
+// Listen on the correct port for Heroku
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+    console.log(`Server running on port ${PORT}`);
+});
+
+// Global handler for uncaught exceptions
+process.on('uncaughtException', (err) => {
+    console.error('Uncaught Exception:', err);
+    // Optionally, exit the process or perform cleanup tasks
+    process.exit(1);
+});
+
+// Global handler for unhandled promise rejections
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+    // Optionally, exit the process or perform cleanup tasks
+    process.exit(1);
 });
