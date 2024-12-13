@@ -24,8 +24,9 @@
  */
 
 (() => {
-    const apiKey = "YOUR_API_KEY_HERE"; // Replace with your actual API key
-    const apiUrl = "http://localhost:3000/chat"; // Point to your local server
+    const apiKey = "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"; // Replace with your actual API key
+    const apiUrl = "https://shrouded-hamlet-24645-7f5b2e86a49d.herokuapp.com/chat";
+ // Point to your local server
 
     /**
      * Fetches a response from the OpenAI API.
@@ -39,7 +40,7 @@
         };
 
         const body = JSON.stringify({
-            model: "gpt-3.5-turbo", // Use the correct model name
+            model: "gpt-4o-mini-2024-07-18", // Use the correct model name
             messages: [{ role: "user", content: prompt }],
             max_tokens: 100,
         });
