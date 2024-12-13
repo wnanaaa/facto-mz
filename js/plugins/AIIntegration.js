@@ -1,10 +1,10 @@
 /*:
  * @target MZ
- * @plugindesc Integrates AI (e.g., ChatGPT) for dynamic dialogues and interactions without relying on Heroku.
+ * @plugindesc Integrates AI (e.g., ChatGPT) for dynamic dialogues and interactions.
  * @author Nana
  *
  * @help
- * This plugin connects RPG Maker MZ directly to OpenAI's API for dynamic responses.
+ * This plugin connects RPG Maker MZ to OpenAI's ChatGPT API for dynamic responses.
  * 
  * Usage:
  * Use the Plugin Command "AIChat" to send a message to the AI and display its response.
@@ -24,32 +24,38 @@
  */
 
 (() => {
-    const apiKey = "YOUR_API_KEY"; // Replace with your actual OpenAI API key
-    const apiUrl = "https://api.openai.com/v1/completions"; // OpenAI API URL for completions
+    const apiKey = "YOUR_API_KEY_HERE"; // Replace with your actual API key
+    const apiUrl = "http://localhost:3000/chat"; // Point to your local server
 
     /**
      * Fetches a response from the OpenAI API.
      * @param {string} prompt - The user's message or query.
      * @returns {Promise<string>} - The AI's response or an error message.
      */
-    const fetchAIResponse = async (prompt) => {
+    async function fetchAIResponse(prompt) {
         const headers = {
             "Content-Type": "application/json",
             "Authorization": `Bearer ${apiKey}`,
         };
 
         const body = JSON.stringify({
-            model: "text-davinci-003", // Use the correct model here
-            prompt: prompt,
+            model: "gpt-3.5-turbo", // Use the correct model name
+            messages: [{ role: "user", content: prompt }],
             max_tokens: 100,
         });
 
         try {
+            console.log("Sending API request...");
+            console.log("Headers:", headers);
+            console.log("Body:", body);
+
             const response = await fetch(apiUrl, {
                 method: "POST",
                 headers: headers,
                 body: body,
             });
+
+            console.log("Response Status:", response.status);
 
             if (!response.ok) {
                 const errorText = await response.text();
@@ -58,12 +64,13 @@
             }
 
             const data = await response.json();
-            return data.choices[0].text.trim(); // Return the response from the AI
+            console.log("API Response Data:", data);
+            return data.choices[0].message.content;
         } catch (error) {
             console.error("Fetch Error:", error);
             return "Error: Unable to connect to AI.";
         }
-    };
+    }
 
     /**
      * Registers the AIChat command in the Plugin Manager.
@@ -72,7 +79,6 @@
         const prompt = args.message || "Hello!";
         console.log("Plugin Command Triggered with Prompt:", prompt);
 
-        // Await the response and add it to the game message
         const response = await fetchAIResponse(prompt);
         console.log("AI Response:", response);
 
