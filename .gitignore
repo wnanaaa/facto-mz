@@ -1,0 +1,14 @@
+# System files
+.DS_Store
+.CFUserTextEncoding
+.zsh_history
+.zsh_sessions/
+.config/
+.ssh/
+Library/
+Desktop
+Documents
+Downloads
+Dropbox
+Creative Cloud Files*/
+
