@@ -24,8 +24,8 @@
  */
 
 (() => {
-    const apiKey = "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"; // Replace with your actual API key
-    const apiUrl = "https://api.openai.com/v1/chat/completions"; // OpenAI API URL
+    const apiKey = "YOUR_API_KEY"; // Replace with your actual OpenAI API key
+    const apiUrl = "https://api.openai.com/v1/completions"; // OpenAI API URL for completions
 
     /**
      * Fetches a response from the OpenAI API.
@@ -39,13 +39,12 @@
         };
 
         const body = JSON.stringify({
-            model: "gpt-4", // Ensure you use the correct model here
-            messages: [{ role: "user", content: prompt }],
+            model: "text-davinci-003", // Use the correct model here
+            prompt: prompt,
             max_tokens: 100,
         });
 
         try {
-            console.log("Sending API request...");
             const response = await fetch(apiUrl, {
                 method: "POST",
                 headers: headers,
@@ -59,7 +58,7 @@
             }
 
             const data = await response.json();
-            return data.choices[0].message.content; // Return the response from the AI
+            return data.choices[0].text.trim(); // Return the response from the AI
         } catch (error) {
             console.error("Fetch Error:", error);
             return "Error: Unable to connect to AI.";
